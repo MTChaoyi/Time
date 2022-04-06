@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time</title>
+</head>
+<body>
+    <style>
+        .text {
+            text-align: center;
+            line-height: 200px;
+        }
+
+        #dateTime {
+            font-size: 100px;
+        }
+
+        #datetime2 {
+            font-size: 60px;
+        }
+    </style>
+
+    <script>
+        Date.prototype.format = function (fmt) {
+            var o = {
+                "y+": this.getFullYear, //年
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds() //秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+        setInterval("document.getElementById('dateTime').innerHTML = (new Date()).format('yyyy-MM-dd<br>hh:mm:ss');", 1000);
+        setInterval("document.getElementById('datetime2').innerHTML='UTC+' + (0 - new Date().getTimezoneOffset() / 60);", 1000);
+    </script>
+
+    <div class="text">
+        <div id="dateTime">正在获取时间...</div>
+        <div id="datetime2">正在获取时间...</div>
+    </div>
+
+</body>
+</html>
